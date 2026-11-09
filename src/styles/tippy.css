@@ -1,0 +1,18 @@
+.tippy-box[data-theme~='deltatab'] {
+  background: color-mix(in oklab, var(--surface) 70%, black);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.3);
+}
+
+.tippy-box[data-theme~='deltatab'] .tippy-content {
+  padding: 0.3rem 0.55rem;
+}
+
+.tippy-box[data-theme~='deltatab'] > .tippy-arrow {
+  display: none;
+}

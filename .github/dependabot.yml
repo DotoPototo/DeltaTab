@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      vue:
+        patterns:
+          - 'vue'
+          - 'vue-*'
+          - '@vue/*'
+          - 'pinia'
+          - 'pinia-*'
+      wxt:
+        patterns:
+          - 'wxt'
+          - '@wxt-dev/*'
+      icons:
+        patterns:
+          - '@iconify-json/*'
+          - 'unplugin-icons'
+      lint:
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+          - '@eslint/*'
+          - '@vue/eslint-*'
+          - 'oxlint'
+          - 'prettier'
+      types:
+        patterns:
+          - '@types/*'
+          - 'typescript'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

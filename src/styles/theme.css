@@ -1,0 +1,152 @@
+/* --accent and --accent-text are set at runtime (libs/boot.ts). */
+
+:root {
+  color-scheme: dark;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Neue Haas Grotesk Text Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 6px;
+  --radius-lg: 8px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.1rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration: 250ms;
+  --duration-slow: 600ms;
+
+  --accent: #718c4d;
+  --accent-text: #fff;
+  --accent-soft: color-mix(in oklab, var(--accent) 18%, transparent);
+  --accent-strong: color-mix(in oklab, var(--accent) 80%, white);
+
+  --success: #98cf5c;
+  --warning: #dd7055;
+  --danger: #be5151;
+  --info: #648dce;
+}
+
+/* Attribute-scoped so the theme picker can preview palettes. Every theme starts from this full
+   base, so a preview never borrows the active theme's tokens. */
+:root,
+[data-theme] {
+  --scrim: #00000099;
+  --surface: #13131380;
+  --surface-raised: #08080880;
+  --surface-hover: rgb(36 40 59 / 0.8);
+  --surface-sunken: #08080880;
+  --surface-solid: #1b1d25;
+  --border: #414868;
+  --border-strong: #565f89;
+  --text: #c2caee;
+  --text-muted: #c0d9ff;
+  --text-faint: #648dce;
+  --blur: 6px;
+}
+
+[data-theme='blue'] {
+  --scrim: #1a1b26;
+  --surface: #29314880;
+  --surface-raised: #1a1f34;
+  --surface-sunken: #1a1f34;
+  --surface-solid: #293148;
+  --blur: 0px;
+}
+
+[data-theme='grey'] {
+  --scrim: #0e0e0f;
+  --surface: #1c1f2680;
+  --surface-raised: #272b33;
+  --surface-hover: #2f343e;
+  --surface-sunken: #272b33;
+  --surface-solid: #1c1f26;
+  --border: #2d323c;
+  --border-strong: #3d4350;
+  --blur: 0px;
+}
+
+[data-theme='dark'] {
+  --scrim: #080808;
+  --surface: #00000080;
+  --surface-raised: #000;
+  --surface-hover: #11141b;
+  --surface-sunken: #000;
+  --surface-solid: #121419;
+  --border: #141820;
+  --border-strong: #262c3a;
+  --blur: 0px;
+}
+
+[data-theme='matrix'] {
+  --scrim: #000;
+  --surface: #081c0680;
+  --surface-raised: #091808;
+  --surface-hover: #0f2a0d;
+  --surface-sunken: #091808;
+  --surface-solid: #020f00;
+  --border: #152014;
+  --border-strong: #24401f;
+  --text: #84d864;
+  --text-muted: #35c200;
+  --text-faint: #c1c1c1;
+  --blur: 0px;
+}
+
+[data-theme='retro'] {
+  --scrim: #0a0a0f;
+  --surface: #13131780;
+  --surface-raised: #15151a;
+  --surface-hover: #1f1f27;
+  --surface-sunken: #15151a;
+  --surface-solid: #131317;
+  --border: #2e2e2e;
+  --border-strong: #444;
+  --text: #df3a6f;
+  --text-muted: #9e43f2;
+  --text-faint: #4b99ad;
+  --blur: 0px;
+}
+
+[data-theme='arctic'] {
+  --scrim: #0b1219;
+  --surface: #1a283680;
+  --surface-raised: #15212d;
+  --surface-hover: #22344599;
+  --surface-sunken: #15212d;
+  --surface-solid: #172331;
+  --border: #2c4256;
+  --border-strong: #3f5b74;
+  --text: #dceaf5;
+  --text-muted: #9cc8e6;
+  --text-faint: #6f93ad;
+  --blur: 12px;
+}
+
+[data-theme='bubblegum'] {
+  --scrim: #1a0420;
+  --surface: #3a0d4280;
+  --surface-raised: #2d0a33;
+  --surface-hover: #4d1557;
+  --surface-sunken: #2d0a33;
+  --surface-solid: #31093a;
+  --border: #ff4fae66;
+  --border-strong: #ff4fae;
+  --text: #ffd1ef;
+  --text-muted: #6ff3ff;
+  --text-faint: #ffe45c;
+  --blur: 4px;
+}

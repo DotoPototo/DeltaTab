@@ -1,0 +1,27 @@
+# Dependencies and builds
+node_modules
+dist
+.wxt
+coverage
+
+# Logs and caches
+*.log
+.eslintcache
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+.DS_Store
+*.sw?
+
+# Local
+web-ext.config.ts
+docs/
+spike/

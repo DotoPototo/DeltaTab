@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "oxc",
+    "vue"
+  ],
+  "env": {
+    "browser": true,
+    "webextensions": true
+  },
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "unicorn/no-new-array": "off",
+    "unicorn/no-useless-length-check": "off",
+    "no-unused-vars": "off",
+    "oxc/erasing-op": "off"
+  }
+}
