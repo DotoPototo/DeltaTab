@@ -121,17 +121,19 @@ const rain = computed(() => {
 
 .weather {
   container-type: size;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto minmax(0, 240px) auto auto;
-  grid-template-areas: 'now' 'details' 'chart' 'hours' 'daily';
-  align-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   gap: 0.85rem;
   height: 100%;
 }
 
+/* Only the chart gives way when the card is short. */
+.weather > :not(.chart) {
+  flex-shrink: 0;
+}
+
 .now {
-  grid-area: now;
   display: flex;
   align-items: center;
   gap: 0.9rem;
@@ -166,7 +168,6 @@ const rain = computed(() => {
 }
 
 .details {
-  grid-area: details;
   display: grid;
   /* 4 in a row when they fit, else 2 × 2, else one per row: never an orphan (3 + 1). */
   grid-template-columns: minmax(0, 1fr);
@@ -180,7 +181,7 @@ const rain = computed(() => {
   }
 }
 
-@container (min-width: 500px) {
+@container (min-width: 400px) {
   .details {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -213,16 +214,14 @@ const rain = computed(() => {
 }
 
 .chart {
-  grid-area: chart;
   display: none;
+  flex: 0 1 240px;
   flex-direction: column;
   gap: 0.4rem;
   min-height: 0;
-  height: 100%;
 }
 
 .hours {
-  grid-area: hours;
   display: none;
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 0.25rem;
@@ -271,7 +270,6 @@ const rain = computed(() => {
 }
 
 .daily {
-  grid-area: daily;
   display: none;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.4rem;
@@ -317,13 +315,14 @@ const rain = computed(() => {
   color: var(--info);
 }
 
-@container (max-height: 150px) {
+@container (max-height: 107px) or ((max-height: 159px) and (max-width: 399px)) {
   .details {
     display: none;
   }
 }
 
-@container (min-height: 250px) {
+/* Four details in one row leave the chart room in a shorter card than two rows do. */
+@container (min-height: 250px) or ((min-height: 210px) and (min-width: 400px)) {
   .chart {
     display: flex;
   }

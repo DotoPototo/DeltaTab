@@ -266,6 +266,26 @@ const hide = (url: string) => config.value.hidden.push(url);
   opacity: 1;
 }
 
+/* Too short for two rows of labelled tiles: drop the labels so two rows still fit. */
+@container (max-height: 185px) {
+  .sites-tiles {
+    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  }
+
+  .sites-tiles .site {
+    padding: 0.35rem;
+  }
+
+  .sites-tiles .site-plate {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .sites-tiles .site-text {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site {
     transition: none;

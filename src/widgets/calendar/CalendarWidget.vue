@@ -57,15 +57,17 @@ const nextHoliday = computed(() => {
 
 <style scoped>
 .calendar-widget {
+  container-type: size;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
   height: 100%;
 }
 
+/* Below this the weeks would overlap, so the card scrolls instead. */
 .month {
   flex: 1;
-  min-height: 0;
+  min-height: 7.5rem;
 }
 
 .holidays-note {
@@ -118,5 +120,11 @@ const nextHoliday = computed(() => {
   margin-left: auto;
   font-size: var(--text-xs);
   color: var(--text-muted);
+}
+
+@container (max-height: 159px) {
+  .next {
+    display: none;
+  }
 }
 </style>
