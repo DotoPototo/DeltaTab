@@ -2,7 +2,7 @@
 
 A beautiful new tab experience with a daily new wallpaper (or randomly selected from your own background images), the time, and a pull-down dashboard of the widgets you choose. Use as much or as little as you like.
 
-[Chrome Web Store](https://chromewebstore.google.com/detail/delta-tab/TODO) · [Privacy policy](PRIVACY.md) · [Report a bug](https://github.com/DotoPototo/DeltaTab/issues)
+[Chrome Web Store](https://chromewebstore.google.com/detail/delta-tab/hfeejhcmcenhcghapkhmcodkjiolbdcg) · [Privacy policy](PRIVACY.md) · [Report a bug](https://github.com/DotoPototo/DeltaTab/issues)
 
 ![CI status](https://github.com/DotoPototo/DeltaTab/actions/workflows/ci.yml/badge.svg)
 
@@ -12,7 +12,7 @@ A beautiful new tab experience with a daily new wallpaper (or randomly selected 
 
 ## Install
 
-Install Delta Tab from the [Chrome Web Store](https://chromewebstore.google.com/detail/delta-tab/TODO). Requires Chrome 116 or later.
+Install Delta Tab from the [Chrome Web Store](https://chromewebstore.google.com/detail/delta-tab/hfeejhcmcenhcghapkhmcodkjiolbdcg). Requires Chrome 116 or later.
 
 New tabs open on a clean home screen: the wallpaper, a clock and the date. Scroll down, drag the handle at the top or press Ctrl+Space to pull down the dashboard. Esc puts it away.
 
