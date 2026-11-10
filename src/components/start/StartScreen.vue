@@ -9,11 +9,9 @@
     </div>
 
     <footer class="start-footer">
-      <div class="start-info">
-        <AccentPicker v-if="current" :wallpaper="current" />
-        <WallpaperCredit v-if="current && settings.start.credit" :wallpaper="current" />
-        <span v-else-if="error" class="start-status">{{ error }}</span>
-      </div>
+      <AccentPicker v-if="current" class="start-accent" :wallpaper="current" />
+      <WallpaperCredit v-if="current && settings.start.credit" class="start-credit" :wallpaper="current" />
+      <span v-else-if="error" class="start-credit start-status">{{ error }}</span>
       <div class="start-actions">
         <IconButton v-if="canSkip" glass size="sm" icon="material-symbols:skip-next-rounded" label="Next wallpaper" @click="wallpaper.next()" />
         <IconButton v-if="canSave" glass size="sm" icon="material-symbols:bookmark-add-outline-rounded" label="Save to my wallpapers" @click="save" />
@@ -108,9 +106,10 @@ const save = toast.attempt('Couldn’t save the wallpaper', async () => {
   left: 20px;
   right: 20px;
   bottom: 20px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  display: grid;
+  /* Equal side columns keep the credit centred on the page, whatever sits either side of it. */
+  grid-template-columns: 1fr minmax(0, auto) 1fr;
+  align-items: end;
   gap: 1rem;
   pointer-events: none;
 }
@@ -119,11 +118,12 @@ const save = toast.attempt('Couldn’t save the wallpaper', async () => {
   pointer-events: auto;
 }
 
-.start-info {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.4rem;
-  min-width: 0;
+.start-accent {
+  justify-self: start;
+}
+
+.start-credit {
+  grid-column: 2;
 }
 
 .start-status {
@@ -136,9 +136,10 @@ const save = toast.attempt('Couldn’t save the wallpaper', async () => {
 }
 
 .start-actions {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   gap: 0.4rem;
-  margin-left: auto;
   opacity: 0.5;
   transition: opacity 0.4s var(--ease-in-out);
 }
