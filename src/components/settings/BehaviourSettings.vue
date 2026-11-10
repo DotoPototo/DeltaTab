@@ -1,6 +1,6 @@
 <template>
   <SettingsGroup title="New tabs">
-    <SettingsRow title="Open the dashboard straight away" description="Skip the clock screen and land on your widgets.">
+    <SettingsRow title="Open the dashboard straight away" description="Skip the home screen and land on your widgets.">
       <ToggleSwitch v-model="settings.openDashboard" aria-label="Open the dashboard straight away" />
     </SettingsRow>
     <SettingsRow title="Open links in a new tab" description="When off, links replace this page, the same as Chrome’s own new tab.">

@@ -6,7 +6,7 @@ A beautiful new tab experience with a daily new wallpaper (or randomly selected 
 
 ![CI status](https://github.com/DotoPototo/DeltaTab/actions/workflows/ci.yml/badge.svg)
 
-![The start screen: a forest wallpaper with the time, date and weather](.github/screenshots/start.webp)
+![The home screen: a forest wallpaper with the time, date and weather](.github/screenshots/start.webp)
 
 ![The dashboard with feeds, weather, world clocks, countdowns, notes and a calendar](.github/screenshots/dashboard.webp)
 
@@ -14,7 +14,7 @@ A beautiful new tab experience with a daily new wallpaper (or randomly selected 
 
 Install Delta Tab from the [Chrome Web Store](https://chromewebstore.google.com/detail/delta-tab/TODO). Requires Chrome 116 or later.
 
-New tabs open on a clean start screen: the wallpaper, a clock and the date. Scroll down, drag the handle at the top or press Ctrl+Space to pull down the dashboard. Esc puts it away.
+New tabs open on a clean home screen: the wallpaper, a clock and the date. Scroll down, drag the handle at the top or press Ctrl+Space to pull down the dashboard. Esc puts it away.
 
 ### Privacy
 

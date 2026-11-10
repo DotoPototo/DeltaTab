@@ -7,10 +7,10 @@
         </SettingsRow>
         <SettingsRow
           v-if="definition.glance"
-          title="Show on start screen"
+          title="Show on the home screen"
           description="A compact summary under the clock, only when there’s something worth knowing."
         >
-          <ToggleSwitch v-model="instance.glance" aria-label="Show on start screen" />
+          <ToggleSwitch v-model="instance.glance" aria-label="Show on the home screen" />
         </SettingsRow>
       </SettingsGroup>
       <component :is="definition.settings.resolved ?? definition.settings" v-if="definition.settings" />

@@ -49,7 +49,7 @@ import type { IconName } from '@/libs/icons';
 const SECTIONS: { id: string; title: string; icon: IconName; component: Component }[] = [
   { id: 'appearance', title: 'Appearance', icon: 'fa-solid:paint-brush', component: AppearanceSettings },
   { id: 'background', title: 'Background', icon: 'material-symbols:wallpaper-rounded', component: BackgroundSettings },
-  { id: 'start', title: 'Start Screen', icon: 'material-symbols:space-dashboard-outline-rounded', component: StartScreenSettings },
+  { id: 'start', title: 'Home Screen', icon: 'material-symbols:space-dashboard-outline-rounded', component: StartScreenSettings },
   { id: 'time', title: 'Time & Units', icon: 'fa6-solid:clock', component: TimeSettings },
   { id: 'behaviour', title: 'Behaviour', icon: 'material-symbols:tune-rounded', component: BehaviourSettings },
   { id: 'data', title: 'Data & Privacy', icon: 'material-symbols:database-outline', component: DataSettings },

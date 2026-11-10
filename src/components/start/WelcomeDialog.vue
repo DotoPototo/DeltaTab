@@ -11,7 +11,7 @@
           size="sm"
           label="New tabs open with"
           :options="[
-            { value: false, label: 'Start Screen' },
+            { value: false, label: 'Home Screen' },
             { value: true, label: 'Dashboard' },
           ]"
         />

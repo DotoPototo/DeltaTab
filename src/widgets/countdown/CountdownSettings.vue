@@ -5,7 +5,7 @@
     </SettingsRow>
   </SettingsGroup>
 
-  <SettingsGroup title="Countdowns" description="Shown on the start screen in the final week.">
+  <SettingsGroup title="Countdowns" description="Shown on the home screen in the final week.">
     <EditableList :items="config.events" :item-key="(e) => e.id" empty="No countdowns yet." @remove="config.events.splice($event, 1)" @submit="add">
       <template #item="{ item }">
         <input v-model="item.label" class="input inline-input" aria-label="Label" />
