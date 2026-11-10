@@ -7,6 +7,7 @@
     :aria-labelledby="bare ? undefined : titleId"
     :aria-label="bare ? title : undefined"
     tabindex="-1"
+    :closedby="dismissible ? undefined : 'none'"
     @close="onClose"
     @click="onBackdropClick"
   >
@@ -18,7 +19,7 @@
           {{ title }}
         </h2>
         <slot name="header" />
-        <IconButton icon="material-symbols:close-rounded" label="Close" :tooltip="false" @click="open = false" />
+        <IconButton v-if="dismissible" icon="material-symbols:close-rounded" label="Close" :tooltip="false" @click="open = false" />
       </header>
       <div ref="body" class="dialog-body">
         <div ref="inner">
@@ -39,9 +40,10 @@ import IconButton from '@/components/base/IconButton.vue';
 import { pushModal, removeModal } from '@/composables/useModals';
 import type { IconName } from '@/libs/icons';
 
-const props = withDefaults(defineProps<{ title: string; icon?: IconName; size?: 'sm' | 'md' | 'xl'; bare?: boolean }>(), {
+const props = withDefaults(defineProps<{ title: string; icon?: IconName; size?: 'sm' | 'md' | 'xl'; bare?: boolean; dismissible?: boolean }>(), {
   icon: undefined,
   size: 'md',
+  dismissible: true,
 });
 
 const open = defineModel<boolean>('open', { required: true });
@@ -108,14 +110,14 @@ const onClose = () => {
 
 const onBackdropClick = (event: MouseEvent) => {
   // Clicks on the ::backdrop target the dialog element itself.
-  if (event.target === dialog.value) open.value = false;
+  if (props.dismissible && event.target === dialog.value) open.value = false;
 };
 </script>
 
 <style scoped>
 .dialog {
   margin: auto;
-  max-height: min(86vh, 900px);
+  max-height: min(88vh, 900px);
   padding: 0;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);

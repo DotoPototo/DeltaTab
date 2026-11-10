@@ -27,6 +27,8 @@ const normalise = (spec: PermissionSpec) => ({ permissions: spec.permissions ?? 
 
 const needsBrowser = (spec: PermissionSpec) => !!(spec.permissions?.length || spec.origins?.length);
 
+export const asksAnything = (spec: PermissionSpec) => !!spec.consent || needsBrowser(spec);
+
 const hasBrowserPermissions = async (spec: PermissionSpec): Promise<boolean> => !needsBrowser(spec) || browser.permissions.contains(normalise(spec));
 
 export const requestPermissions = (spec: PermissionSpec): Promise<boolean> => {
