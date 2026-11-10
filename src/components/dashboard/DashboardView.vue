@@ -108,20 +108,17 @@ watch(open, (value) => {
   else if (editing.value) dashboard.commitEdit();
 });
 
-// Focus follows the sheet, leaving an open dialog alone; Edit and Done replace each other, so focus
-// is handed between them.
+// Closing hands focus to nothing: the inert sheet drops it. Edit and Done replace each other, so they pass it on.
 const sheetBody = useTemplateRef<HTMLElement>('sheetBody');
 const handle = useTemplateRef<HTMLElement>('handle');
 const editButton = useTemplateRef<{ $el: HTMLElement }>('editButton');
 const doneButton = useTemplateRef<{ $el: HTMLElement }>('doneButton');
 
 watch(open, async (value) => {
-  if (openModals.value.length) return;
   const focused = document.activeElement;
-  if (value && (focused === handle.value || focused === document.body)) {
-    await nextTick();
-    sheetBody.value?.focus({ preventScroll: true });
-  } else if (!value && sheetBody.value?.contains(focused)) handle.value?.focus({ preventScroll: true });
+  if (!value || openModals.value.length || !(focused === handle.value || focused === document.body)) return;
+  await nextTick();
+  sheetBody.value?.focus({ preventScroll: true });
 });
 
 watch(editing, async (value) => {
