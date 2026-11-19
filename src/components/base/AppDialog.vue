@@ -8,6 +8,7 @@
     :aria-label="bare ? title : undefined"
     tabindex="-1"
     :closedby="dismissible ? undefined : 'none'"
+    @cancel="onCancel"
     @close="onClose"
     @click="onBackdropClick"
   >
@@ -103,8 +104,15 @@ onBeforeUnmount(() => {
   if (dialog.value) removeModal(dialog.value);
 });
 
+const onCancel = (event: Event) => {
+  if (!props.dismissible) event.preventDefault();
+};
+
 const onClose = () => {
-  if (dialog.value) removeModal(dialog.value);
+  if (!dialog.value) return;
+  // Before `closedby` (Chrome 134) a second Escape closes the dialog whatever `cancel` says.
+  if (!props.dismissible && open.value) return dialog.value.showModal();
+  removeModal(dialog.value);
   open.value = false;
 };
 
