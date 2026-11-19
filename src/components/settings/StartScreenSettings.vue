@@ -29,7 +29,7 @@
     <SettingsRow title="Widget summaries" description="Weather, status incidents and fresh releases under the clock. Choose which in each widget’s settings.">
       <ToggleSwitch v-model="settings.start.glances" aria-label="Widget summaries" />
     </SettingsRow>
-    <SettingsRow title="Image credit" description="Title and photographer of daily images, bottom-left.">
+    <SettingsRow title="Image credit" description="Title and photographer of daily images, along the bottom.">
       <ToggleSwitch v-model="settings.start.credit" aria-label="Image credit" />
     </SettingsRow>
   </SettingsGroup>

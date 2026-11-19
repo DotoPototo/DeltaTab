@@ -6,11 +6,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import type { Wallpaper } from '@/libs/wallpaper/library';
+import { useSettingsStore } from '@/stores/settings';
 
 const props = defineProps<{ wallpaper: Wallpaper }>();
 
-const open = () => window.open(props.wallpaper.link, '_blank', 'noopener');
+const { settings } = storeToRefs(useSettingsStore());
+const open = () => window.open(props.wallpaper.link, settings.value.openLinksInNewTab ? '_blank' : '_self', 'noopener');
 
 // Bing's caption already includes the photographer ("… (© Name/Agency)"); others get "title · credit".
 const text = computed(() => {
