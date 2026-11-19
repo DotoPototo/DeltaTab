@@ -20,7 +20,8 @@ const { rows } = useReleases();
 const now = useNow();
 
 const newest = computed(() => {
-  const latest = rows.value[0]?.latest;
+  // Rows are newest first, but the first may be a repo with only prereleases.
+  const latest = rows.value.find((row) => row.latest)?.latest;
   return latest && now.value - latest.publishedAt < 2 * DAY ? latest : undefined;
 });
 </script>
