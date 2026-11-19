@@ -20,4 +20,17 @@ describe('fetchSummary', () => {
       globalThis.fetch = original;
     }
   });
+
+  test('keeps the pull requests when notifications fail', async () => {
+    const original = globalThis.fetch;
+    globalThis.fetch = (async (url: string) =>
+      url.endsWith('/graphql')
+        ? Response.json({ data: { viewer: { login: 'me', pullRequests: { nodes: [] } }, reviews: { issueCount: 3, nodes: [] } } })
+        : new Response(null, { status: 503 })) as unknown as typeof fetch;
+    try {
+      expect(await fetchSummary('token', () => true)).toMatchObject({ login: 'me', reviewCount: 3, notifications: undefined });
+    } finally {
+      globalThis.fetch = original;
+    }
+  });
 });

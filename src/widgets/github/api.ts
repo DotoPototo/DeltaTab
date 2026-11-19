@@ -1,4 +1,4 @@
-import { HttpError, fetchJson } from '@/libs/http';
+import { fetchJson } from '@/libs/http';
 
 export type CheckState = 'SUCCESS' | 'FAILURE' | 'ERROR' | 'PENDING' | 'EXPECTED' | null;
 
@@ -20,7 +20,7 @@ export interface GitHubSummary {
   reviewCount: number;
   mine: PullRequest[];
   mineMore: boolean;
-  /** Undefined when the token can't read notifications (fine-grained tokens). */
+  /** Undefined when they couldn't be read (a fine-grained token, or the request failed). */
   notifications?: number;
 }
 
@@ -95,10 +95,8 @@ export const fetchSummary = async (token: string, allowed: () => boolean): Promi
 
   const notifications = await fetchJson<unknown[]>(`https://api.github.com/notifications?per_page=${NOTIFICATION_PAGE}`, { headers: githubHeaders(token) })
     .then((list) => list.length)
-    .catch((error: unknown) => {
-      if (error instanceof HttpError && (error.status === 403 || error.status === 404)) return undefined;
-      throw error;
-    });
+    // The count is an extra: without it (no scope, or GitHub having a moment) the pull requests still show.
+    .catch(() => undefined);
 
   const { viewer, reviews } = response.data;
   return {
