@@ -133,5 +133,8 @@ export const nextSunEvent = (daily: DayPoint[], now: number) =>
     ])
     .find((event) => event.time > 0 && event.time > now);
 
-export const nextRain = (hourly: HourPoint[], now: number, withinHours = 12, threshold = 50) =>
-  hourly.find((h) => h.time + HOUR > now && h.time < now + withinHours * HOUR && h.precip >= threshold);
+// Open-Meteo stamps a probability at the end of the hour it covers. Returns when that hour starts.
+export const nextRain = (hourly: HourPoint[], now: number, withinHours = 12, threshold = 50) => {
+  const hour = hourly.find((h) => h.time > now && h.time - HOUR < now + withinHours * HOUR && h.precip >= threshold);
+  return hour && hour.time - HOUR;
+};

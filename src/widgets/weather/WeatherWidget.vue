@@ -106,9 +106,9 @@ const upcomingHours = computed(() => (forecast.value?.hourly ?? []).filter((_, i
 const hourLabel = (time: number) => dateFormat({ hour: 'numeric', hour12: hour12.value, timeZone: timeZone.value }).format(time);
 
 const rain = computed(() => {
-  const hour = forecast.value && nextRain(forecast.value.hourly, now.value);
-  if (!hour) return undefined;
-  return hour.time <= now.value ? 'Rain likely now' : `Rain likely from ${timeOf(hour.time)}`;
+  const from = forecast.value && nextRain(forecast.value.hourly, now.value);
+  if (!from) return undefined;
+  return from <= now.value ? 'Rain likely now' : `Rain likely from ${timeOf(from)}`;
 });
 </script>
 

@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'bun:test';
 import { HOUR } from '@/libs/time';
-import { nextSunEvent, type DayPoint } from '@/widgets/weather/api';
+import { nextRain, nextSunEvent, type DayPoint, type HourPoint } from '@/widgets/weather/api';
 import { isPrecipitating } from '@/widgets/weather/codes';
 
 const day = (start: number, sunrise: number, sunset: number) => ({ time: start, sunrise: start + sunrise * HOUR, sunset: start + sunset * HOUR }) as DayPoint;
@@ -31,5 +31,23 @@ describe('isPrecipitating', () => {
   test('only falling rain, snow or thunder counts, never a clear sky or fog', () => {
     for (const code of [51, 61, 65, 71, 80, 82, 85, 95, 99]) expect(isPrecipitating(code)).toBe(true);
     for (const code of [0, 1, 2, 3, 45, 48]) expect(isPrecipitating(code)).toBe(false);
+  });
+});
+
+describe('nextRain', () => {
+  const hours = (...precip: number[]) => precip.map((p, i) => ({ time: (10 + i) * HOUR, precip: p }) as HourPoint);
+
+  test('a probability stamped at the hour describes the hour before it', () => {
+    expect(nextRain(hours(80, 0, 0), 10.5 * HOUR)).toBeUndefined();
+    expect(nextRain(hours(0, 80, 0), 10.5 * HOUR)).toBe(10 * HOUR);
+  });
+
+  test('gives the start of the first wet hour ahead', () => {
+    expect(nextRain(hours(0, 0, 0, 60), 10.5 * HOUR)).toBe(12 * HOUR);
+  });
+
+  test('ignores rain beyond the window or below the threshold', () => {
+    expect(nextRain(hours(0, 0, 0, 0, 60), 10.5 * HOUR, 2)).toBeUndefined();
+    expect(nextRain(hours(0, 40), 10.5 * HOUR)).toBeUndefined();
   });
 });

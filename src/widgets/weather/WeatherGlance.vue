@@ -28,8 +28,8 @@ const detail = computed(() => {
   const data = forecast.value;
   if (!data) return '';
   if (isPrecipitating(data.current.code)) return weatherLabel(data.current.code);
-  const rain = nextRain(data.hourly, now.value, 6);
-  if (rain) return rain.time <= now.value ? 'Rain likely soon' : `Rain likely ~${formatTime(rain.time, hour12.value, { timeZone: data.timezone })}`;
+  const from = nextRain(data.hourly, now.value, 6);
+  if (from) return from <= now.value ? 'Rain likely soon' : `Rain likely ~${formatTime(from, hour12.value, { timeZone: data.timezone })}`;
   const [today] = data.daily;
   return today ? `${weatherLabel(data.current.code)} · H ${Math.round(today.max)}°` : (location.value?.name ?? '');
 });
