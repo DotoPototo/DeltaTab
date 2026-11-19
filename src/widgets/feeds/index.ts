@@ -34,6 +34,13 @@ export const LOBSTERS_LISTS = [
 // Keyed by content, not instance id, so a re-created identical source reuses its cached results.
 export const sourceKey = ({ kind, value }: Pick<FeedSource, 'kind' | 'value'>) => `${kind}:${value}`;
 
+const KINDS: readonly string[] = ['hn', 'reddit', 'lobsters', 'rss'] satisfies FeedKind[];
+
+const isSource = (value: unknown): value is FeedSource => {
+  const s = value as Partial<FeedSource> | null;
+  return !!s && [s.id, s.kind, s.value, s.label].every((field) => typeof field === 'string') && KINDS.includes(s.kind!);
+};
+
 export const source = (kind: FeedKind, value: string, label: string): FeedSource => ({ id: crypto.randomUUID(), kind, value, label });
 
 export default defineWidget<FeedsConfig>({
@@ -47,6 +54,8 @@ export default defineWidget<FeedsConfig>({
     limit: 30,
     density: 'comfortable',
   }),
+  // Site access is worked out from each source, so a malformed one would break the whole card.
+  sanitise: (config) => ({ ...config, sources: Array.isArray(config.sources) ? config.sources.filter(isSource) : [] }),
   view: lazy(() => import('./FeedsWidget.vue')),
   settings: lazy(() => import('./FeedsSettings.vue')),
   // HN allows cross-origin reads and Reddit is an install-time permission; other sites are asked for when added.

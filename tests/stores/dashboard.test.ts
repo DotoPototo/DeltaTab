@@ -128,6 +128,18 @@ describe('layout editing', () => {
     expect(store.state.preset).toBe('grid');
     expect(store.editing).toBe(false);
   });
+
+  test('a draft made before the dashboard was replaced is dropped on commit', async () => {
+    const store = useDashboardStore();
+    await store.ready;
+    store.beginEdit();
+    store.setPreset('wide');
+    const imported = defaultDashboard();
+    store.state = imported;
+    store.commitEdit();
+    expect(store.state.preset).toBe('classic');
+    expect(store.placed).toHaveLength(imported.instances.length);
+  });
 });
 
 describe('reconcile', () => {
@@ -178,6 +190,14 @@ describe('sanitiseDashboard', () => {
     const result = sanitiseDashboard(broken({ columns: [0.9, 0.9, 0.9], rows: [['x'], [0.5, 0.5], null] }));
     expect(result.columns).toEqual([0.35, 0.3, 0.35]);
     expect(result.rows[0]).toEqual([0.68, 0.32]);
+  });
+
+  test('malformed feed sources are dropped', () => {
+    const fine = defaultDashboard();
+    const feeds = fine.instances.find((i) => i.type === 'feeds')!;
+    const [first] = feeds.config.sources as unknown[];
+    feeds.config.sources = [null, first, { id: 'x', kind: 'gopher', value: '', label: '' }];
+    expect(sanitiseDashboard(fine).instances.find((i) => i.type === 'feeds')!.config.sources).toEqual([first]);
   });
 
   test('widget configs keep valid union values and gain missing fields', () => {

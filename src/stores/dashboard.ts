@@ -146,14 +146,16 @@ export const sanitiseDashboard = (dashboard: DashboardState): DashboardState => 
     if (!isRecord(raw) || typeof raw.id !== 'string' || typeof raw.type !== 'string' || ids.has(raw.id)) return [];
     ids.add(raw.id);
     const config = isRecord(raw.config) ? raw.config : {};
-    const defaults = widgetDefinition(raw.type)?.defaults() as Record<string, unknown> | undefined;
+    const definition = widgetDefinition(raw.type);
+    const defaults = definition?.defaults() as Record<string, unknown> | undefined;
+    const filled = defaults ? fillMissing(defaults, config) : config;
     return [
       {
         id: raw.id,
         type: raw.type,
         glance: raw.glance === true,
         ...(typeof raw.title === 'string' && raw.title.trim() && { title: raw.title.trim().slice(0, MAX_TITLE) }),
-        config: defaults ? fillMissing(defaults, config) : config,
+        config: (definition?.sanitise?.(filled) ?? filled) as Record<string, unknown>,
       },
     ];
   });
@@ -214,8 +216,11 @@ export const useDashboardStore = defineStore('dashboard', () => {
     draft.value = cloneArrangement(state.value);
   };
 
+  // Widgets are never deleted by editing, so a draft naming one that's gone predates an import or
+  // reset from another tab, and the replacement stands.
   const commitEdit = () => {
-    if (draft.value) Object.assign(state.value, cloneArrangement(draft.value));
+    const current = draft.value && arrangedIds(draft.value).every(find);
+    if (draft.value && current) Object.assign(state.value, cloneArrangement(draft.value));
     draft.value = null;
   };
 

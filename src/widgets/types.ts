@@ -8,6 +8,8 @@ export interface WidgetDefinition<C extends object = object> {
   description: string;
   icon: IconName;
   defaults: () => C;
+  /** Repairs a stored or imported config the defaults couldn't vouch for. */
+  sanitise?(config: C): C;
   view: LazyComponent;
   settings?: LazyComponent;
   glance?: LazyComponent;
