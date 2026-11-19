@@ -60,6 +60,7 @@ import SegmentedControl from '@/components/base/SegmentedControl.vue';
 import WidgetCard from '@/components/dashboard/WidgetCard.vue';
 import { useNow } from '@/composables/useNow';
 import { hashKey, useResource } from '@/composables/useResource';
+import { useShell } from '@/composables/useShell';
 import { errorMessage, settleAll } from '@/libs/http';
 import { hostname } from '@/libs/text';
 import { MINUTE, formatAge, formatCompact } from '@/libs/time';
@@ -80,6 +81,7 @@ const KIND_COLOURS: Record<FeedKind, string> = { hn: '#ff6600', reddit: 'var(--a
 
 const config = useWidgetConfig<FeedsConfig>();
 const { openSettings } = useWidget();
+const { open: dashboardOpen } = useShell();
 const now = useNow();
 const tab = ref(ALL);
 
@@ -132,15 +134,16 @@ const partialErrors = computed(() =>
 const fresh = ref(new Set<string>());
 let seenTimer: ReturnType<typeof setTimeout> | undefined;
 watch(
-  items,
-  async (list) => {
+  [items, dashboardOpen],
+  async ([list, visible]) => {
     await readStateReady;
     const unseen = list.filter((item) => !seenIds.value.has(item.id)).map((item) => item.id);
     if (!unseen.length) return;
     // A first-ever load would mark everything new, which is noise rather than signal.
     if (seenIds.value.size) fresh.value = new Set([...fresh.value, ...unseen]);
     clearTimeout(seenTimer);
-    seenTimer = setTimeout(() => markSeen(unseen), MARK_SEEN_DELAY);
+    // The card stays mounted behind a closed dashboard, where nothing has been seen.
+    if (visible) seenTimer = setTimeout(() => markSeen(unseen), MARK_SEEN_DELAY);
   },
   { immediate: true }
 );
