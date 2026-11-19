@@ -46,6 +46,8 @@ export const idbKeys = async (store: StoreName): Promise<string[]> => {
 };
 
 export const idbPut = async (records: { store: StoreName; key: string; value: unknown }[]): Promise<void> => {
+  // A transaction over no stores is an error.
+  if (!records.length) return;
   const db = await open();
   const tx = db.transaction([...new Set(records.map((r) => r.store))], 'readwrite');
   for (const { store, key, value } of records) tx.objectStore(store).put(value, key);
