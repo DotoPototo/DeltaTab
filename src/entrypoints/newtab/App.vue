@@ -42,11 +42,12 @@ welcomePending.getValue().then((pending) => (welcome.value = pending));
 if (useSettingsStore().settings.openDashboard) open.value = true;
 
 useEventListener(document, 'keydown', (event: KeyboardEvent) => {
-  if (previewingLook.value) return;
+  // A dialog owns the keyboard while it's open, and so does whatever already handled this key.
+  if (previewingLook.value || openModals.value.length || event.defaultPrevented) return;
   if (event.ctrlKey && event.code === 'Space') {
     event.preventDefault();
-    toggle();
-  } else if (event.key === 'Escape' && open.value && !openModals.value.length) {
+    if (!event.repeat) toggle();
+  } else if (event.key === 'Escape' && open.value) {
     if (dashboard.editing) dashboard.cancelEdit();
     else toggle();
   }
