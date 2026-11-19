@@ -226,7 +226,11 @@ export const persistent = <T>(key: StorageItemKey, defaults: () => T, options: P
     adopters.set(storageKey(key), (value, next) => adopt((value ?? null) as T | null, next));
   });
   pending.add(ready);
-  ready.finally(() => pending.delete(ready)).catch(() => undefined);
+  // A failed read stays, so `allReady` reports it however late it's asked.
+  ready.then(
+    () => pending.delete(ready),
+    () => undefined
+  );
 
   return { state, ready, status, flush };
 };

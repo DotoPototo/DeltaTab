@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach } from 'bun:test';
 import { nextTick } from 'vue';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { fillMissing, merge3, mergeDefaults, persistent } from '@/libs/persist';
+import { allReady, fillMissing, merge3, mergeDefaults, persistent } from '@/libs/persist';
 
 const defaults = () => ({ theme: 'glass', nested: { a: 1, b: 2 }, list: [1, 2] });
 const read = async (key: string): Promise<any> => (await fakeBrowser.storage.local.get(key))[key];
@@ -183,5 +183,20 @@ describe('fillMissing', () => {
       weekend: [5, 6],
       region: 'GB',
     });
+  });
+});
+
+// Last: a failed read stays failed for the rest of the page's life.
+describe('allReady', () => {
+  test('still reports a read that failed before it was asked', async () => {
+    // Only the first read fails: the test runner counts a second, unobserved rejection as an error.
+    const realGet = fakeBrowser.storage.local.get;
+    let failures = 0;
+    fakeBrowser.storage.local.get = ((...args: Parameters<typeof realGet>) =>
+      failures++ ? realGet(...args) : Promise.reject(new Error('unreadable'))) as typeof realGet;
+    const p = persistent('local:r1', defaults);
+    await p.ready.catch(() => undefined);
+    fakeBrowser.storage.local.get = realGet;
+    await expect(allReady()).rejects.toThrow('unreadable');
   });
 });
