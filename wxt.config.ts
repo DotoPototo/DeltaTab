@@ -16,6 +16,8 @@ export default defineConfig({
   webExt: {
     disabled: true,
   },
+  // The Firefox source archive is zipped from the working directory, so local-only folders must be named.
+  zip: { excludeSources: ['docs/**', 'spike/**'] },
   vite: () => ({
     plugins: [Icons({ compiler: 'vue3', scale: 1 })],
     build: { rolldownOptions: DROP_ORDINARY_LOGS },
