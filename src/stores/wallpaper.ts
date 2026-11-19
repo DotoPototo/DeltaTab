@@ -33,10 +33,9 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
   const url = ref<string>();
   const error = ref<string>();
 
-  const source = computed<WallpaperSource>(() => {
-    const selected = settingsStore.settings.wallpaper.source;
-    return selected === 'library' && !library.value.length ? 'wikimedia' : selected;
-  });
+  const source = computed<WallpaperSource>(() => settingsStore.settings.wallpaper.source);
+  // An image already on the device: shown when the chosen source has nothing, without asking another for one.
+  const storedDaily = () => DAILY_SOURCES.map((s) => daily.value[s]).find(Boolean) ?? null;
 
   // Only the newest display() commits, so a slow decode can't overwrite a later choice.
   let displayRequest = 0;
@@ -97,8 +96,6 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       await refreshDaily(src, processInWorker);
     } catch (e) {
       console.warn(`[wallpaper] ${src} unavailable:`, e);
-      const fallback = DAILY_SOURCES.find((s) => s !== src);
-      if (!current.value && fallback && !daily.value[fallback]) await refreshDaily(fallback, processInWorker).catch(() => undefined);
       if (!current.value) error.value = 'Couldn’t fetch today’s image. Check your connection or content blocker.';
     }
   };
@@ -109,12 +106,13 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
     if (src === 'library') {
       const shown = await shownItem.getValue();
       const keep = !forceNew && shown && isStillCurrent(rotation.value, shown.at) ? library.value.find((w) => w.id === shown.id) : undefined;
-      wallpaper = keep ?? library.value.find((w) => w.id === preferredId) ?? (await fromQueue(current.value?.id));
-      if (wallpaper && !keep) shownItem.setValue({ id: wallpaper.id, at: Date.now() });
+      const own = keep ?? library.value.find((w) => w.id === preferredId) ?? (await fromQueue(current.value?.id));
+      if (own && !keep) shownItem.setValue({ id: own.id, at: Date.now() });
+      wallpaper = own ?? storedDaily();
     } else {
       const own = daily.value[src];
       if (!own || isOutdated(own, src)) requestDaily(src);
-      wallpaper = own ?? DAILY_SOURCES.map((s) => daily.value[s]).find(Boolean) ?? null;
+      wallpaper = own ?? storedDaily();
     }
     try {
       // Deleted while decoding: it's no longer in the library, so this recursion ends.
@@ -150,7 +148,10 @@ export const useWallpaperStore = defineStore('wallpaper', () => {
       if ((latest && latest.id !== current.value?.id) || !current.value) show();
     });
     watch(library, (value) => {
-      if (current.value && !isDaily(current.value) && !value.some((w) => w.id === current.value?.id)) show();
+      const shown = current.value;
+      const removed = shown && !isDaily(shown) && !value.some((w) => w.id === shown.id);
+      const standingIn = source.value === 'library' && value.length && (!shown || isDaily(shown));
+      if (removed || standingIn) show();
     });
   };
 
